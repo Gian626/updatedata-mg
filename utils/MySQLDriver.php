@@ -1,25 +1,25 @@
 <?php
 class MySQLDriver{
     private $connessione;
-    public function  __construct(){
-        $this->connessione=new mysqli("localhost:3307","root", "", "covid-19analytics");
+    public function __construct(){
+        $this->connessione=new mysqli("localhost","root", "", "covid-19analytics", 3307);
         print_r($this->connessione);
     }
-    public function   creaTabelle(){
-        $query= "
+    public function creaTabelle(){
+        $queries= array("
         create table IF NOT EXISTS Utenti (
             username VARCHAR(255)  PRIMARY KEY,
             password TEXT NOT NULL,
             email  TEXT NOT NULL,
             isAdmin BOOLEAN NOT NULL
         );
-            
+        ","
         create table IF NOT EXISTS Articoli (
             ID_Art INT(10) AUTO_INCREMENT  PRIMARY KEY,
             titolo TEXT NOT NULL,
             testo TEXT NOT NULL
         );
-          
+        ","
         create table IF NOT EXISTS ImagginiArticolo(
             ID_Img INT(10) AUTO_INCREMENT PRIMARY KEY,
             url TEXT NOT NULL, 
@@ -28,7 +28,7 @@ class MySQLDriver{
             REFERENCES  Articoli(ID_Art)
             ON UPDATE  CASCADE  ON DELETE CASCADE
         );
-            
+        ","
         create table IF NOT EXISTS DatiNazionali(
             ID_n INT(10)  AUTO_INCREMENT PRIMARY KEY,
             data DATETIME,
@@ -46,7 +46,7 @@ class MySQLDriver{
             tamponi INT (10),
             casi_testati INT (10)
         );
-            
+        ","
         create table IF NOT EXISTS DatiRegionali(
             ID_r INT(10) AUTO_INCREMENT PRIMARY KEY ,
             data DATETIME,
@@ -68,7 +68,7 @@ class MySQLDriver{
             tamponi INT(10),
             casi_testati INT(10)
         );
-            
+        ","   
         create table IF NOT EXISTS DatiProvinciali(
             ID_p INT(10)  AUTO_INCREMENT PRIMARY KEY ,
             data DATETIME ,
@@ -81,16 +81,17 @@ class MySQLDriver{
             latitudine FLOAT ,
             longitudine FLOAT ,
             totale_casi INT(10)
-        ) ;
-        ";
-       echo  $this->connessione->query($query);
+        );
+        ");
+        foreach($queries as $query){
+            $this->connessione->query($query);
+        }
     }
+
     public function  query($query){
         return $this->connessione->query($query);
     }
 }
 $mysql=new MySQLDriver();
 $mysql->creaTabelle();
-
-
 ?>
