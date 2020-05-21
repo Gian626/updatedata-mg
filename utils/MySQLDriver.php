@@ -3,7 +3,6 @@ class MySQLDriver{
     private $connessione;
     public function __construct(){
         $this->connessione=new mysqli("localhost","root", "", "covid-19analytics", 3307);
-        print_r($this->connessione);
     }
     public function creaTabelle(){
         $queries= array("
