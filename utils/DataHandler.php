@@ -2,81 +2,97 @@
 
  class DataHandler{
 
-    public function estraiDati($dataname){
-
+   public function estraiDati($dataname){
       $curl = curl_init();
-
       curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/$dataname.json",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
+         CURLOPT_URL => "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/$dataname.json",
+         CURLOPT_RETURNTRANSFER => true,
+         CURLOPT_ENCODING => "",
+         CURLOPT_MAXREDIRS => 10,
+         CURLOPT_TIMEOUT => 0,
+         CURLOPT_FOLLOWLOCATION => true,
+         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+         CURLOPT_CUSTOMREQUEST => "GET",
       ));
-      
       $response = curl_exec($curl);
-      
       curl_close($curl);
       return json_decode($response, true);
-      
+   }
 
-    }
+   public function salvaDati($dati,$tablename){
+      $columns = "";
+      $values = "";
+      $i = 0;
+      foreach($dati as $row){
+         $k = 0;
 
-    public function salvaDati($dati,$tablename){
-         $queryes="";
-         foreach($dati as $row){
-            $index=0;
-
-            $values="";
-           
-             foreach($row as $key=>$value){
-                if($key=="long"){
-                  $key="longitudine" ;
-                }
-                if($key=="lat"){
-                   $key="latitudine";
-                }
-                if($key!="note_it" && $key!="note_en")
-                {
-                if(gettype($value)=="string"){
-                   $value="'$value'";
-                }
-               
-                 if(gettype($value)=="NULL"){
-                    continue;
-                 }
-
-                  if($index==0){
-                    $values="$value";
-                  }
-                  else
-                  {
-                     $values="$values,$value";
-                  }
-               }
-                  $index++;
-             }  
-             
-             $queryes="$queryes INSERT INTO `$tablename`($colums) VALUES ($values);"; 
-            
+         // Deleting the useless values from the $row array
+         if(array_key_exists("note_it", $row)){
+            unset($row["note_it"]);
          }
-          echo "$queryes", "<br>";
-          require_once('./MySQLDriver.php');
-          $mysql=new MySQLDriver();
-          print_r($mysql);
-          $mysql->query($queryes);
-        
+         if(array_key_exists("note_en", $row)){
+            unset($row["note_en"]);
+         }
 
+         foreach($row as $key=>$value){
+            if($key == "long"){
+               $key = "longitudine" ;
+            }
+            if($key == "lat"){
+               $key = "latitudine";
+            }
+            if(gettype($value) == "string"){
+               $value = "'$value'";
+            }
 
-    }
+            // If the values is null, then i set it as a string (compatible with mysql)
+            if(gettype($value) == "NULL"){
+               $value = "NULL";
+            }
+
+            // Preparing columns name array
+            if($i == 0){
+               if($k == 0){
+                  $columns = "$key";
+               }else{
+                  $columns = "$columns, $key";
+               }
+            }
+
+            /****
+               Creating the (values 1), (values 2), (values 3), .. (values n); thing; 
+               NOTE: the syntax is very important, that's why there are a lot of conditions
+            ****/
+            if($k == 0) {
+               $values = "$values ($value,";
+            } else if ($k == sizeof($row) - 1){
+               if($i == sizeof($dati) - 1){
+                  $values = "$values $value);";
+               }else{
+                  $values = "$values $value),";
+               }
+            } else {
+               $values = "$values $value,";
+            }
+            $k++; 
+         }
+         $i++;
+      }
+
+      // This is the final query
+      $query = "INSERT INTO $tablename ($columns) VALUES $values";
+      echo $query;
+      
+      // READ ME!!!!! Remove the comments below to try the query, it works anyway
+
+      // require_once('./MySQLDriver.php');
+      // $mysql=new MySQLDriver();
+      // $mysql->query($query);
+   }
  }
  
-   $qualcosa = new DataHandler();
-   $dati= ($qualcosa->estraiDati("dpc-covid19-ita-andamento-nazionale"));
-   // print_r($dati);
-   $qualcosa->salvaDati($dati,"DatiNazionali")
+   $dataHandler = new DataHandler();
+   $dati= ($dataHandler->estraiDati("dpc-covid19-ita-andamento-nazionale"));
+   $dataHandler->salvaDati($dati,"DatiNazionali")
 
 ?>
