@@ -2,23 +2,34 @@
 
  class DataHandler{
 
-    public function EstraiDati($result){
+    public function estraiDati(){
 
-    $estrazione =( "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json");
+      $curl = curl_init();
 
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $estrazione);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_HEADER, false);
-    $avvio = curl_exec($curl);
-    curl_close($curl);
-    var_dump(json_decode($avvio));
-    print_r($estrazione);
-
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+      ));
+      
+      $response = curl_exec($curl);
+      
+      curl_close($curl);
+      echo $response;
+      
 
     }
 
  }
 
+    $qualcosa=new DataHandler();
+    $qualcosa->estraiDati();
+
+  
 
 ?>
