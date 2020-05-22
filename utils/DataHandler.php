@@ -41,15 +41,18 @@
             if($key == "lat"){
                $key = "latitudine";
             }
+            str_replace("'","",$value);
             if(gettype($value) == "string"){
+              
                $value = "'$value'";
+
             }
 
             // If the values is null, then i set it as a string (compatible with mysql)
             if(gettype($value) == "NULL"){
                $value = "NULL";
             }
-
+            
             // Preparing columns name array
             if($i == 0){
                if($k == 0){
@@ -81,18 +84,16 @@
 
       // This is the final query
       $query = "INSERT INTO $tablename ($columns) VALUES $values";
+      echo "<br><br><br><br>";
       echo $query;
       
-      // READ ME!!!!! Remove the comments below to try the query, it works anyway
 
-      // require_once('./MySQLDriver.php');
-      // $mysql=new MySQLDriver();
-      // $mysql->query($query);
+       require_once(__DIR__.'/MySQLDriver.php');
+       $mysql=new MySQLDriver();
+       $mysql->query($query);
    }
+
  }
  
-   $dataHandler = new DataHandler();
-   $dati= ($dataHandler->estraiDati("dpc-covid19-ita-andamento-nazionale"));
-   $dataHandler->salvaDati($dati,"DatiNazionali")
-
+  
 ?>
