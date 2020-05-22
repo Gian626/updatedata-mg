@@ -41,9 +41,8 @@
             if($key == "lat"){
                $key = "latitudine";
             }
-            str_replace("'","",$value);
             if(gettype($value) == "string"){
-              
+              $value=str_replace("'"," ",$value);
                $value = "'$value'";
 
             }
