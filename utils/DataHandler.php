@@ -83,8 +83,6 @@
 
       // This is the final query
       $query = "INSERT INTO $tablename ($columns) VALUES $values";
-      echo "<br><br><br><br>";
-      echo $query;
       
 
        require_once(__DIR__.'/MySQLDriver.php');
