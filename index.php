@@ -3,30 +3,7 @@
 
 
 
- 
-<!-- <!DOCTYPE html>
-<html>
-<head>
-     <title> Image Upload</title>
-     <link rel="sylesheet" type="text/css" href="style.css">
-</head>
-<body>
-<div id="content">
-    <form method="post"  action="index.php"  enctype="multipart/form-data">
-      <input type="hidden"  name="size"  value="1000000">
-      <div>
-          <input type="file"  name="image">
-      </div>
-      <div>
-          <textarea name="text" cols="40"  rows="4"  placeholder="bello sto saulle"></textarea>
-      </div>
-      <div>
-          <input type="submit" name="upload" value="upload Image">
-      </div>
-    </form>
-</div>
-</body>
-</html>   -->
+
 
 <?php
 
@@ -37,7 +14,7 @@
     private $connessione;
     
     public function __construct(){
-      $this->connessione=new mysqli("localhost","root", "", "covid-19analytics", 3307);
+      $this->connessione=new mysqli("sql2.freemysqlhosting.net","sql2342765", " uY4%eC4!", "sql2342765", 3306);
     }
 
     public function creaTabelle(){
@@ -230,34 +207,6 @@
     }
     
 
-  }
-  
- //READ ME !! errore riga 241 da sistemare
-
-  //class UploadImage{
-    // public function  insertImage(){
-
-    //   $msg= "";
-    //   if (isset($_POST['upload'])) {
-
-    //     $posto = "./Img".basename($_FILES['url']['id']);
-    //     $mysql = new MySQLDriver();
-    //     $url = $_FILES['url']['id'];
-    //     $text = $_POST['text'];
-    //     $query = "INSERT INTO  imagginiarticolo (url, id) VALUES ('$url','$text')";
-    //     mysqli_query($mysql , $query);
-    //     if (move_uploaded_file($_FILES['tmp_name']['id'] ,  $posto])){
-
-    //         $msg = "image uploadead";
-
-    //         else{
-
-    //           $msg = "c'è stato un problema houston";
-    //         }
-    //       }
-    //     }
-    //   }
-    }
   }
 
   $mysql = new MySQLDriver();
