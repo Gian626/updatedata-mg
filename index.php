@@ -29,7 +29,10 @@
         create table IF NOT EXISTS Articoli (
           ID_Art INT(10) AUTO_INCREMENT  PRIMARY KEY,
           titolo TEXT NOT NULL,
-          testo TEXT NOT NULL
+          testo TEXT NOT NULL,
+          created_at timestamp default current_timestamp,
+          categoria TEXT NOT NULL,
+          luogo  TEXT NOT NULL
         );
         ","
         create table IF NOT EXISTS ImagginiArticolo(
