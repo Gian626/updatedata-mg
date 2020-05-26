@@ -214,14 +214,14 @@
 
   $mysql = new MySQLDriver();
   $mysql->creaTabelle();
-  $result = $mysql->query("select * from datinazionali");
+  $result = $mysql->query("select * from DatiNazionali");
   $datahandler = new DataHandler();
 
   if($result->num_rows == 0){
     $alldataname=array(
-      "datinazionali"=>"dpc-covid19-ita-andamento-nazionale",
-      "datiregionali"=>"dpc-covid19-ita-regioni",
-      "datiprovinciali"=>"dpc-covid19-ita-province"
+      "DatiNazionali"=>"dpc-covid19-ita-andamento-nazionale",
+      "DatiRegionali"=>"dpc-covid19-ita-regioni",
+      "DatiProvinciali"=>"dpc-covid19-ita-province"
     );
     foreach($alldataname as $tablename=>$filename){
       $dati=$datahandler->estraiDati($filename);
@@ -230,9 +230,9 @@
   }
   else{
     $dataname=array(
-      "datinazionali"=>"dpc-covid19-ita-andamento-nazionale-latest",
-      "datiregionali"=>"dpc-covid19-ita-regioni-latest",
-      "datiprovinciali"=>"dpc-covid19-ita-province-latest"
+      "DatiNazionali"=>"dpc-covid19-ita-andamento-nazionale-latest",
+      "DatiRegionali"=>"dpc-covid19-ita-regioni-latest",
+      "DatiProvinciali"=>"dpc-covid19-ita-province-latest"
     );
     foreach($dataname as $tablename=>$filename){
       $dati=$datahandler->estraiDati($filename);
