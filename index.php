@@ -14,7 +14,7 @@
     private $connessione;
     
     public function __construct(){
-      $this->connessione=new mysqli("sql2.freemysqlhosting.net","sql2342765", "uY4%eC4!", "sql2342765", 3306);
+      $this->connessione=new mysqli("eu-cdbr-west-03.cleardb.net","b8c9bef0d7c6cd", "3d11d9c8", "heroku_504909cbd12c3c9", 3306);
     }
 
     public function creaTabelle(){
