@@ -23,7 +23,8 @@
           username VARCHAR(255)  PRIMARY KEY,
           password TEXT NOT NULL,
           email  TEXT NOT NULL,
-          isAdmin BOOLEAN NOT NULL
+          isAdmin BOOLEAN NOT NULL,
+          isSubscribed BOOLEAN NOT NULL
         );
         ","
         create table IF NOT EXISTS Articoli (
